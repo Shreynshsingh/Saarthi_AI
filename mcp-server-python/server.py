@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 
 from dotenv import load_dotenv
 from mcp.server.fastmcp import FastMCP
@@ -29,7 +30,11 @@ import db
 load_dotenv()
 log = logging.getLogger("saarthi-mcp")
 
-mcp = FastMCP("saarthi-mcp-server", host="127.0.0.1", port=8001)
+# Local dev binds loopback:8001. Production (Render private service) sets
+# MCP_HOST=0.0.0.0 and PORT; the service stays internal-only either way.
+mcp = FastMCP("saarthi-mcp-server",
+              host=os.getenv("MCP_HOST", "127.0.0.1"),
+              port=int(os.getenv("PORT", "8001")))
 
 HELPLINES_IN = [
     {"name": "Tele-MANAS", "phone": "14416", "available": "24x7"},

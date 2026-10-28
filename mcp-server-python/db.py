@@ -22,6 +22,8 @@ def get_conn():
         user=os.getenv("DB_USERNAME", "saarthi_user"),
         password=os.getenv("DB_PASSWORD", "saarthi_password"),
         connect_timeout=5,
+        # "prefer" negotiates TLS with Supabase, stays plain locally.
+        sslmode=os.getenv("DB_SSLMODE", "prefer"),
     )
 
 

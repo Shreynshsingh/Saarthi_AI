@@ -105,7 +105,9 @@ DB_HOST=db.xxxxxxxxxxxx.supabase.co
 DB_NAME=postgres
 DB_USERNAME=postgres
 DB_PASSWORD=your_supabase_password
-MCP uses a READ-ONLY DB user in ideal production. For hackathon MVP, using main user is acceptable but never expose MCP URL publicly.
+DB_SSLMODE=require
+MCP_HOST=0.0.0.0
+MCP uses a READ-ONLY DB user in ideal production. For hackathon MVP, using main user is acceptable but never expose MCP URL publicly. Render injects PORT itself - do not set it. MCP_HOST=0.0.0.0 lets the private service accept Render-internal traffic.
 
 Deploy and note URLs:
 Sign Service: https://saarthi-sign.onrender.com
@@ -152,10 +154,12 @@ DB_PORT=5432
 DB_NAME=postgres
 DB_USERNAME=postgres
 DB_PASSWORD=your_supabase_password
+DB_JDBC_PARAMS=?sslmode=require
 ​
 REDIS_HOST=your-upstash-host.upstash.io
 REDIS_PORT=6379
 REDIS_PASSWORD=your_upstash_password
+REDIS_SSL_ENABLED=true
 ​
 GROQ_API_KEY=gsk_xxxxxxxxxxxx
 DID_API_KEY=xxxxxxxxxxxx
@@ -165,8 +169,9 @@ FRONTEND_URL=https://localhost:3000
 PYTHON_SERVICE_URL=https://saarthi-sign.onrender.com
 MCP_SERVER_URL=http://saarthi-mcp:8001
 MCP_ENABLED=true
+AVATAR_PUBLIC_BASE_URL=https://saarthi-api.onrender.com
 ​
-PORT=8080
+Do NOT set PORT - Render injects it and the app reads it automatically.
 FRONTEND_URL is temporary. You will update it after Vercel deployment in Step 7.
 
 Deploy. First build takes 5-10 minutes.
@@ -258,6 +263,12 @@ JWT_SECRET	✅	❌ NEVER	✅	-
 FRONTEND_URL	localhost:3000	-	✅ Vercel URL	-
 PYTHON_SERVICE_URL	localhost:8000	-	✅ Render URL	-
 MCP_SERVER_URL	localhost:8001	-	✅ Internal URL	-
+DB_JDBC_PARAMS	(unset)	-	✅ ?sslmode=require	-
+REDIS_SSL_ENABLED	(unset)	-	✅ true	-
+DB_SSLMODE	(unset)	-	-	✅ require (MCP)
+MCP_HOST	(unset)	-	-	✅ 0.0.0.0 (MCP)
+AVATAR_PUBLIC_BASE_URL	localhost:8080	-	✅ Render backend URL	-
+SIGN_ENABLED / MCP_ENABLED	true	-	✅ true (kill switches)	-
 14. Handling Cold Starts & Demo Day Prep
     Render Free Tier problem: First request after sleep takes 30-60 seconds.
 
