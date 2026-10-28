@@ -1,0 +1,101 @@
+spring:
+  application:
+    name: saarthi-backend
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:saarthi_db}
+    username: ${DB_USERNAME:saarthi_user}
+    password: ${DB_PASSWORD:saarthi_password}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+      pool-name: SaarthiHikariPool
+
+  jpa:
+    hibernate:
+      ddl-auto: validate # Flyway creates tables, JPA only validates
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      timeout: 2000ms
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+saarthi:
+  security:
+    jwt:
+      # DEV-ONLY default so the app boots without env setup. MUST be overridden
+      # via JWT_SECRET env var in any shared/staging/production environment.
+      secret: ${JWT_SECRET:DEV-ONLY-DEFAULT-JWT-SECRET-CHANGE-ME-IN-PRODUCTION-0123456789}
+      expiration-ms: 86400000 # 24 hours for hackathon
+    cors:
+      allowed-origin: ${FRONTEND_URL:http://localhost:3000}
+  python-service:
+    url: ${PYTHON_SERVICE_URL:http://localhost:8000}
+    tts-timeout-ms: 5000
+    stt-timeout-ms: 10000
+  sign:
+    enabled: ${SIGN_ENABLED:true}
+    confidence-threshold: 0.80
+    timeout-ms: 2000
+  mcp:
+    enabled: ${MCP_ENABLED:true}
+    server-url: ${MCP_SERVER_URL:http://localhost:8001}
+    endpoint: /mcp
+    timeout-ms: 5000
+    cache-ttl-seconds: 600
+  avatar:
+    provider: ${AVATAR_PROVIDER:did} # did | static - one-line kill switch
+    upload-dir: ${AVATAR_UPLOAD_DIR:uploads/avatars}
+    max-file-size-mb: 5
+    # Base URL the BROWSER and D-ID use for uploads. D-ID cloud cannot reach
+    # localhost: point this at a tunnel/deploy domain for live lip-sync,
+    # otherwise sessions automatically fall back to static photo + voice.
+    public-base-url: ${AVATAR_PUBLIC_BASE_URL:http://localhost:8080}
+
+groq:
+  api:
+    key: ${GROQ_API_KEY}
+    base-url: https://api.groq.com/openai/v1
+    model: openai/gpt-oss-120b
+  whisper:
+    model: whisper-large-v3
+
+did:
+  api:
+    key: ${DID_API_KEY:}
+    base-url: https://api.d-id.com
+
+logging:
+  level:
+    root: INFO
+    com.saarthi.ai: INFO
+    org.springframework.web.socket: INFO

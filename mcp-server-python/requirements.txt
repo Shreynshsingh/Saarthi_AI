@@ -1,0 +1,6 @@
+# Pinned to v1: the FastMCP API in server.py follows 13_MCP_CONNECTION.md.
+# (mcp 2.x renamed FastMCP->MCPServer; revisit on a deliberate upgrade.)
+mcp[cli]==1.30.0
+psycopg2-binary
+python-dotenv
+uvicorn
