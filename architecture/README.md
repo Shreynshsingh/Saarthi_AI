@@ -174,13 +174,9 @@ Phase 5: Sign Language & Personalized Avatar
 Phase 6: Deployment & Final Demo (Target: 2nd Nov 2026)
 V2: Self-hosted MuseTalk avatar, Long-term memory with pgvector, Native Mobile App
 👨‍💻 Author
-Shreynsh Singh Passionate Software Engineer who loves to solve real-world problems
-
-Solo developer for Meta Global AI Developer Hackathon.
+Shreynsh Singh, Passionate Software Engineer who loves to solve real-world problems
 
 🙏 Acknowledgements
-Meta AI
-for Llama models and this hackathon opportunity
 Groq
 for ultra-fast Llama & Whisper inference
 D-ID
